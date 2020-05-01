@@ -22,7 +22,7 @@
             @endif
 
             <p class="col-12  mb-3 p-0">By using this website you fully understand and accept our <a href="{{route('pages.static','terms')}}">Terms of Service.</a> </p>
-            <label class="bg-primary col-md-12 mb-3 control-label text-center">Login with Email</label>
+            <label class="col-md-12 mb-3 control-label text-center text-white" style="background-color:#05999f;">Login with Email</label>
 
             <form action="{{ route('login') }}" method="POST">
                 @csrf
@@ -75,7 +75,7 @@
             @endif
 
             <div class="form-group text-center mt-3">
-                <label for="name" class=" bg-danger col-md-12 control-label">Social Login/Register</label>
+                <label for="name" class="col-md-12 control-label text-white" style="background-color:#b2d03e;">Social Login/Register</label>
                 <div class="col-md-12">
                     <a  href="{{ url('login/facebook') }}" class="confirm btn btn-social-icon btn-facebook"><i class="fab fa-facebook-square fa-3x"></i></a>
                     <a  href="{{ url('login/google') }}" class="confirm btn btn-social-icon btn-google-plus"><i class="fab fa-google-plus-square fa-3x"></i></a>
