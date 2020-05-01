@@ -15,42 +15,105 @@
     </div>
 
     <div class="card-body">
-        <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Event">
-            <thead>
-                <tr>
-                    <th width="10">
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Event">
+                <thead>
+                    <tr>
+                        <th width="10">
 
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.id') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.cover') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.name') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.is_online') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.address') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.organiser_details') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.scan_code') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.event.fields.slug') }}
-                    </th>
-                    <th>
-                        &nbsp;
-                    </th>
-                </tr>
-            </thead>
-        </table>
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.cover') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.is_online') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.address') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.organiser_details') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.scan_code') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.event.fields.slug') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($events as $key => $event)
+                        <tr data-entry-id="{{ $event->id }}">
+                            <td>
+
+                            </td>
+                            <td>
+                                {{ $event->id ?? '' }}
+                            </td>
+                            <td>
+                                @if($event->cover)
+                                    <a href="{{ $event->cover->getUrl() }}" target="_blank">
+                                        <img src="{{ $event->cover->getUrl('thumb') }}" width="50px" height="50px">
+                                    </a>
+                                @endif
+                            </td>
+                            <td>
+                                {{ $event->name ?? '' }}
+                            </td>
+                            <td>
+                                <span style="display:none">{{ $event->is_online ?? '' }}</span>
+                                <input type="checkbox" disabled="disabled" {{ $event->is_online ? 'checked' : '' }}>
+                            </td>
+                            <td>
+                                {{ $event->address ?? '' }}
+                            </td>
+                            <td>
+                                {{ $event->organiser_details ?? '' }}
+                            </td>
+                            <td>
+                                {{ $event->scan_code ?? '' }}
+                            </td>
+                            <td>
+                                {{ $event->slug ?? '' }}
+                            </td>
+                            <td>
+                                @can('event_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.events.show', $event->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
+
+                                @can('event_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.events.edit', $event->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
+
+                                @can('event_delete')
+                                    <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
+
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -63,14 +126,14 @@
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('event_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.events.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-          return entry.id
+      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+          return $(entry).data('entry-id')
       });
 
       if (ids.length === 0) {
@@ -92,34 +155,16 @@
   dtButtons.push(deleteButton)
 @endcan
 
-  let dtOverrideGlobals = {
-    buttons: dtButtons,
-    processing: true,
-    serverSide: true,
-    retrieve: true,
-    aaSorting: [],
-    ajax: "{{ route('admin.events.index') }}",
-    columns: [
-      { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{ data: 'cover', name: 'cover', sortable: false, searchable: false },
-{ data: 'name', name: 'name' },
-{ data: 'is_online', name: 'is_online' },
-{ data: 'address', name: 'address' },
-{ data: 'organiser_details', name: 'organiser_details' },
-{ data: 'scan_code', name: 'scan_code' },
-{ data: 'slug', name: 'slug' },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
-    ],
+  $.extend(true, $.fn.dataTable.defaults, {
     order: [[ 1, 'desc' ]],
     pageLength: 100,
-  };
-  $('.datatable-Event').DataTable(dtOverrideGlobals);
+  });
+  $('.datatable-Event:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     });
-});
+})
 
 </script>
 @endsection

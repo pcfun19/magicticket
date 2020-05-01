@@ -36,15 +36,6 @@ class UpdatePaymentRequest extends FormRequest
             'affiliate_user_id' => [
                 'required',
                 'integer'],
-            'first_scanned'     => [
-                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
-                'nullable'],
-            'last_scanned'      => [
-                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
-                'nullable'],
-            'created_by_id'     => [
-                'required',
-                'integer'],
         ];
 
     }

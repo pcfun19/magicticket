@@ -15,42 +15,116 @@
     </div>
 
     <div class="card-body">
-        <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Ticket">
-            <thead>
-                <tr>
-                    <th width="10">
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Ticket">
+                <thead>
+                    <tr>
+                        <th width="10">
 
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.id') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.event') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.name') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.total_available') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.price') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.includes') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.instructions') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.ticket.fields.ticket_image') }}
-                    </th>
-                    <th>
-                        &nbsp;
-                    </th>
-                </tr>
-            </thead>
-        </table>
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.event') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.total_available') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.price') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.currency') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.includes') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.instructions') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.ticket_image') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.event_date') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($tickets as $key => $ticket)
+                        <tr data-entry-id="{{ $ticket->id }}">
+                            <td>
+
+                            </td>
+                            <td>
+                                {{ $ticket->id ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ticket->event->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ticket->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ticket->total_available ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ticket->price ?? '' }}
+                            </td>
+                            <td>
+                                {{ App\Ticket::CURRENCY_SELECT[$ticket->currency] ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ticket->includes ?? '' }}
+                            </td>
+                            <td>
+                                {{ $ticket->instructions ?? '' }}
+                            </td>
+                            <td>
+                                @if($ticket->ticket_image)
+                                    <a href="{{ $ticket->ticket_image->getUrl() }}" target="_blank">
+                                        <img src="{{ $ticket->ticket_image->getUrl('thumb') }}" width="50px" height="50px">
+                                    </a>
+                                @endif
+                            </td>
+                            <td>
+                                {{ $ticket->event_date ?? '' }}
+                            </td>
+                            <td>
+                                @can('ticket_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.tickets.show', $ticket->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
+
+                                @can('ticket_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.tickets.edit', $ticket->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
+
+                                @can('ticket_delete')
+                                    <form action="{{ route('admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
+
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -63,14 +137,14 @@
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('ticket_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.tickets.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-          return entry.id
+      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+          return $(entry).data('entry-id')
       });
 
       if (ids.length === 0) {
@@ -92,34 +166,16 @@
   dtButtons.push(deleteButton)
 @endcan
 
-  let dtOverrideGlobals = {
-    buttons: dtButtons,
-    processing: true,
-    serverSide: true,
-    retrieve: true,
-    aaSorting: [],
-    ajax: "{{ route('admin.tickets.index') }}",
-    columns: [
-      { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{ data: 'event_name', name: 'event.name' },
-{ data: 'name', name: 'name' },
-{ data: 'total_available', name: 'total_available' },
-{ data: 'price', name: 'price' },
-{ data: 'includes', name: 'includes' },
-{ data: 'instructions', name: 'instructions' },
-{ data: 'ticket_image', name: 'ticket_image', sortable: false, searchable: false },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
-    ],
+  $.extend(true, $.fn.dataTable.defaults, {
     order: [[ 1, 'desc' ]],
     pageLength: 100,
-  };
-  $('.datatable-Ticket').DataTable(dtOverrideGlobals);
+  });
+  $('.datatable-Ticket:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     });
-});
+})
 
 </script>
 @endsection

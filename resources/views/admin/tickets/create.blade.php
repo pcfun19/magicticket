@@ -54,6 +54,19 @@
                 <span class="help-block">{{ trans('cruds.ticket.fields.price_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required">{{ trans('cruds.ticket.fields.currency') }}</label>
+                <select class="form-control {{ $errors->has('currency') ? 'is-invalid' : '' }}" name="currency" id="currency" required>
+                    <option value disabled {{ old('currency', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach(App\Ticket::CURRENCY_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('currency', 'eur') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('currency'))
+                    <span class="text-danger">{{ $errors->first('currency') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.ticket.fields.currency_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="includes">{{ trans('cruds.ticket.fields.includes') }}</label>
                 <textarea class="form-control {{ $errors->has('includes') ? 'is-invalid' : '' }}" name="includes" id="includes" required>{{ old('includes') }}</textarea>
                 @if($errors->has('includes'))
@@ -77,6 +90,14 @@
                     <span class="text-danger">{{ $errors->first('ticket_image') }}</span>
                 @endif
                 <span class="help-block">{{ trans('cruds.ticket.fields.ticket_image_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="event_date">{{ trans('cruds.ticket.fields.event_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('event_date') ? 'is-invalid' : '' }}" type="text" name="event_date" id="event_date" value="{{ old('event_date') }}" required>
+                @if($errors->has('event_date'))
+                    <span class="text-danger">{{ $errors->first('event_date') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.ticket.fields.event_date_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required" for="top_margin">{{ trans('cruds.ticket.fields.top_margin') }}</label>

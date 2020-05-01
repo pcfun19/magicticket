@@ -30,8 +30,13 @@ class UpdateTicketRequest extends FormRequest
             'price'           => [
                 'required',
                 'min:5'],
+            'currency'        => [
+                'required'],
             'includes'        => [
                 'required'],
+            'event_date'      => [
+                'required',
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format')],
             'top_margin'      => [
                 'required',
                 'integer',

@@ -37,6 +37,9 @@
                                 {{ trans('cruds.ticket.fields.price') }}
                             </th>
                             <th>
+                                {{ trans('cruds.ticket.fields.currency') }}
+                            </th>
+                            <th>
                                 {{ trans('cruds.ticket.fields.includes') }}
                             </th>
                             <th>
@@ -44,6 +47,9 @@
                             </th>
                             <th>
                                 {{ trans('cruds.ticket.fields.ticket_image') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.ticket.fields.event_date') }}
                             </th>
                             <th>
                                 &nbsp;
@@ -72,6 +78,9 @@
                                     {{ $ticket->price ?? '' }}
                                 </td>
                                 <td>
+                                    {{ App\Ticket::CURRENCY_SELECT[$ticket->currency] ?? '' }}
+                                </td>
+                                <td>
                                     {{ $ticket->includes ?? '' }}
                                 </td>
                                 <td>
@@ -83,6 +92,9 @@
                                             <img src="{{ $ticket->ticket_image->getUrl('thumb') }}" width="50px" height="50px">
                                         </a>
                                     @endif
+                                </td>
+                                <td>
+                                    {{ $ticket->event_date ?? '' }}
                                 </td>
                                 <td>
                                     @can('ticket_show')

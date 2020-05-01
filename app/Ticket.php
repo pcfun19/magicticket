@@ -4,6 +4,7 @@ namespace App;
 
 use App\Traits\Auditable;
 use App\Traits\MultiTenantModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -27,9 +28,16 @@ class Ticket extends Model implements HasMedia
     ];
 
     protected $dates = [
+        'event_date',
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    const CURRENCY_SELECT = [
+        'eur' => 'EUR',
+        'usd' => 'USD',
+        'gbp' => 'GBP',
     ];
 
     protected $fillable = [
@@ -38,8 +46,10 @@ class Ticket extends Model implements HasMedia
         'name',
         'total_available',
         'price',
+        'currency',
         'includes',
         'instructions',
+        'event_date',
         'created_at',
         'top_margin',
         'left_margin',
@@ -84,6 +94,18 @@ class Ticket extends Model implements HasMedia
         }
 
         return $file;
+
+    }
+
+    public function getEventDateAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
+
+    }
+
+    public function setEventDateAttribute($value)
+    {
+        $this->attributes['event_date'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
 
     }
 

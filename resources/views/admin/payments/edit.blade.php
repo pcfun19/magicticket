@@ -87,34 +87,6 @@
                 <span class="help-block">{{ trans('cruds.payment.fields.affiliate_user_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="first_scanned">{{ trans('cruds.payment.fields.first_scanned') }}</label>
-                <input class="form-control datetime {{ $errors->has('first_scanned') ? 'is-invalid' : '' }}" type="text" name="first_scanned" id="first_scanned" value="{{ old('first_scanned', $payment->first_scanned) }}">
-                @if($errors->has('first_scanned'))
-                    <span class="text-danger">{{ $errors->first('first_scanned') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.payment.fields.first_scanned_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="last_scanned">{{ trans('cruds.payment.fields.last_scanned') }}</label>
-                <input class="form-control datetime {{ $errors->has('last_scanned') ? 'is-invalid' : '' }}" type="text" name="last_scanned" id="last_scanned" value="{{ old('last_scanned', $payment->last_scanned) }}">
-                @if($errors->has('last_scanned'))
-                    <span class="text-danger">{{ $errors->first('last_scanned') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.payment.fields.last_scanned_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="created_by_id">{{ trans('cruds.payment.fields.created_by') }}</label>
-                <select class="form-control select2 {{ $errors->has('created_by') ? 'is-invalid' : '' }}" name="created_by_id" id="created_by_id" required>
-                    @foreach($created_bies as $id => $created_by)
-                        <option value="{{ $id }}" {{ ($payment->created_by ? $payment->created_by->id : old('created_by_id')) == $id ? 'selected' : '' }}>{{ $created_by }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('created_by'))
-                    <span class="text-danger">{{ $errors->first('created_by') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.payment.fields.created_by_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

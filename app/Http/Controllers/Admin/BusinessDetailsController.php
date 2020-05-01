@@ -12,83 +12,18 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class BusinessDetailsController extends Controller
 {
     use MediaUploadingTrait;
 
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('business_detail_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = BusinessDetail::with(['created_by'])->select(sprintf('%s.*', (new BusinessDetail)->table));
-            $table = Datatables::of($query);
+        $businessDetails = BusinessDetail::all();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'business_detail_show';
-                $editGate      = 'business_detail_edit';
-                $deleteGate    = 'business_detail_delete';
-                $crudRoutePart = 'business-details';
-
-                return view('partials.datatablesActions', compact(
-                    'viewGate',
-                    'editGate',
-                    'deleteGate',
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : "";
-            });
-            $table->editColumn('name', function ($row) {
-                return $row->name ? $row->name : "";
-            });
-            $table->editColumn('taxid', function ($row) {
-                return $row->taxid ? $row->taxid : "";
-            });
-            $table->editColumn('passport', function ($row) {
-                if (!$row->passport) {
-                    return '';
-                }
-
-                $links = [];
-
-                foreach ($row->passport as $media) {
-                    $links[] = '<a href="' . $media->getUrl() . '" target="_blank"><img src="' . $media->getUrl('thumb') . '" width="50px" height="50px"></a>';
-                }
-
-                return implode(' ', $links);
-            });
-            $table->editColumn('documents', function ($row) {
-                if (!$row->documents) {
-                    return '';
-                }
-
-                $links = [];
-
-                foreach ($row->documents as $media) {
-                    $links[] = '<a href="' . $media->getUrl() . '" target="_blank">' . trans('global.downloadFile') . '</a>';
-                }
-
-                return implode(', ', $links);
-            });
-            $table->editColumn('activities_details', function ($row) {
-                return $row->activities_details ? $row->activities_details : "";
-            });
-
-            $table->rawColumns(['actions', 'placeholder', 'passport', 'documents']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.businessDetails.index');
+        return view('admin.businessDetails.index', compact('businessDetails'));
     }
 
     public function create()

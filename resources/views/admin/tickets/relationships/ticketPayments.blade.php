@@ -43,18 +43,6 @@
                                 {{ trans('cruds.payment.fields.affiliate_user') }}
                             </th>
                             <th>
-                                {{ trans('cruds.payment.fields.first_scanned') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.payment.fields.last_scanned') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.payment.fields.created_at') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.payment.fields.created_by') }}
-                            </th>
-                            <th>
                                 &nbsp;
                             </th>
                         </tr>
@@ -85,18 +73,6 @@
                                 </td>
                                 <td>
                                     {{ $payment->affiliate_user->business_name ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->first_scanned ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->last_scanned ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->created_at ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->created_by->name ?? '' }}
                                 </td>
                                 <td>
                                     @can('payment_show')

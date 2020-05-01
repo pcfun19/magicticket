@@ -255,6 +255,10 @@ return [
             'font_size_helper'       => 'Font size for the code',
             'font_angle'             => 'Font Angle',
             'font_angle_helper'      => 'Angle of the code on the ticket',
+            'currency'               => 'Currency',
+            'currency_helper'        => '',
+            'event_date'             => 'Event Date',
+            'event_date_helper'      => '',
         ],
     ],
     'paymentMethod'  => [

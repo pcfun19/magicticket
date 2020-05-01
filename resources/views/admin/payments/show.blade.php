@@ -95,14 +95,6 @@
                             {{ $payment->last_scanned }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.payment.fields.created_by') }}
-                        </th>
-                        <td>
-                            {{ $payment->created_by->name ?? '' }}
-                        </td>
-                    </tr>
                 </tbody>
             </table>
             <div class="form-group">
