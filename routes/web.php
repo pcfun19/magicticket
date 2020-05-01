@@ -8,7 +8,12 @@ Route::get('/', 'HomeController@home')->name('guest.home');
 Route::get('static/{id}', 'HomeController@static')->name('pages.static');
 Route::get('ticket/{code}', 'HomeController@asset')->name('ticket.get');
 Route::get('event/{code}', 'HomeController@event')->name('event.get');
-Route::get('payment-method', 'HomeController@paymentMethod')->name('payment.method.create');
+
+// Payment execution or cancellation
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('payment-method/save', 'HomeController@execUpgrade')->name('payment.method.save');
+});
+
 
 Route::get('/home', function () {
     if (session('status')) {

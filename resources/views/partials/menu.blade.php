@@ -134,7 +134,7 @@
                 @endcan
                 @can('payment_access')
                     <li class="nav-item">
-                        <a href="{{ route("admin.payments.index") }}" class="nav-link bg-success {{ request()->is('admin/payments') || request()->is('admin/payments/*') ? 'active' : '' }}">
+                        <a href="{{ route("admin.payments.index") }}" style="background-color:#05999f" class="nav-link text-white {{ request()->is('admin/payments') || request()->is('admin/payments/*') ? 'active' : '' }}" >
                             <i class="fa-fw nav-icon fas fa-money-bill-alt">
 
                             </i>

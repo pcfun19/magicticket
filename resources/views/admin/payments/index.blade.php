@@ -42,18 +42,7 @@
                     <th>
                         {{ trans('cruds.payment.fields.affiliate_user') }}
                     </th>
-                    <th>
-                        {{ trans('cruds.payment.fields.first_scanned') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.payment.fields.last_scanned') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.payment.fields.created_at') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.payment.fields.created_by') }}
-                    </th>
+
                     <th>
                         &nbsp;
                     </th>
@@ -117,10 +106,6 @@
 { data: 'method_method_type', name: 'method.method_type' },
 { data: 'method.slug', name: 'method.slug' },
 { data: 'affiliate_user_business_name', name: 'affiliate_user.business_name' },
-{ data: 'first_scanned', name: 'first_scanned' },
-{ data: 'last_scanned', name: 'last_scanned' },
-{ data: 'created_at', name: 'created_at' },
-{ data: 'created_by_name', name: 'created_by.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     order: [[ 1, 'desc' ]],

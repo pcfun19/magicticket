@@ -67,11 +67,8 @@ class PaymentsController extends Controller
                 return $row->affiliate_user ? $row->affiliate_user->business_name : '';
             });
 
-            $table->addColumn('created_by_name', function ($row) {
-                return $row->created_by ? $row->created_by->name : '';
-            });
 
-            $table->rawColumns(['actions', 'placeholder', 'ticket', 'method', 'affiliate_user', 'created_by']);
+            $table->rawColumns(['actions', 'placeholder', 'ticket', 'method', 'affiliate_user']);
 
             return $table->make(true);
         }
