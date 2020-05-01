@@ -1,16 +1,21 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="login-box">
-    <div class="login-logo">
-        <div class="login-logo">
-            <a href="#">
-                {{ trans('panel.site_title') }}
-            </a>
-        </div>
-    </div>
+    
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">{{ trans('global.register') }}</p>
+
+            <div class="login-logo">
+            <div class="login-logo">
+                <a href="{{route('guest.home')}}">
+                    <img src="{{asset('logo.png')}}" width="100%">
+                </a>
+            </div>
+            </div>
+
+            <p class="col-12  mb-3 p-0">By using this website you fully understand and accept our <a href="{{route('pages.static','terms')}}">Terms of Service.</a> </p>
+
             <form method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
                 <div>
@@ -45,13 +50,34 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                        <button type="submit" class="confirm btn btn-primary btn-block btn-flat">
                             {{ trans('global.register') }}
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+
+
+        <div class="form-group text-center">
+                <label for="name" class=" bg-light col-md-12 control-label">Go to Login</label>
+                <div class="col-md-12">
+                     <a  href="{{ route('login') }}"> {{ trans('global.login') }} </a>
+                </div>
+        </div>
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+@parent
+<!-- <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $('.confirm').on('click', function () {
+        var message = 'By using our platform you have read, understood and agree with our Terms of Service and all our Policies. Click OK to continue or cancel if you do not agree.';
+        action = confirm(message) ? true : event.preventDefault();
+    });
+</script> -->
 @endsection

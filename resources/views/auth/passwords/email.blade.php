@@ -1,18 +1,19 @@
 @extends('layouts.app')
 @section('content')
 <div class="login-box">
-    <div class="login-logo">
-        <div class="login-logo">
-            <a href="{{ route('admin.home') }}">
-                {{ trans('panel.site_title') }}
-            </a>
-        </div>
-    </div>
+
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">
+        <div class="login-logo">
+                <div class="login-logo">
+                    <a href="{{ route('guest.home') }}">
+                        <img src="{{asset('logo.png')}}" width="100%">
+                    </a>
+                </div>
+            </div>
+            <!-- <p class="login-box-msg">
                 {{ trans('global.reset_password') }}
-            </p>
+            </p> -->
 
             @if(session('status'))
                 <div class="alert alert-success" role="alert">

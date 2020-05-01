@@ -32,7 +32,11 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
             </ul>
-
+            
+            <a href="{{route('admin.home')}}" class="ml-auto mr-auto"><img src="{{asset('logo.png')}}" class="ml-auto mr-auto" style="height:45px;"></a>
+                    
+            
+            <select class="searchable-field form-control"> </select>
             <!-- Right navbar links -->
             @if(count(config('panel.available_languages', [])) > 1)
                 <ul class="navbar-nav ml-auto">

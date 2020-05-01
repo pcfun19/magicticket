@@ -24,11 +24,14 @@
 
 <div class="lockscreen">
     <div class="lockscreen-wrapper">
-        <div class="lockscreen-logo">
-            <a href="{{ route('admin.home') }}">
-                {{ trans('panel.site_title') }}
-            </a>
-        </div>
+            
+            <div class="login-logo">
+                <div class="login-logo">
+                    <a href="{{ route('guest.home') }}">
+                        <img src="{{asset('logo.png')}}" width="100%">
+                    </a>
+                </div>
+            </div>
 
         <div class="lockscreen-name">
             {{ auth()->user()->name ?? '' }}

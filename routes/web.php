@@ -1,6 +1,15 @@
 <?php
 
-Route::redirect('/', '/login');
+
+Route::get('/login/{social}','Auth\LoginController@socialLogin')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
+Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallback')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
+
+Route::get('/', 'HomeController@home')->name('guest.home');
+Route::get('static/{id}', 'HomeController@static')->name('pages.static');
+Route::get('ticket/{code}', 'HomeController@asset')->name('ticket.get');
+Route::get('event/{code}', 'HomeController@event')->name('event.get');
+Route::get('payment-method', 'HomeController@paymentMethod')->name('payment.method.create');
+
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));

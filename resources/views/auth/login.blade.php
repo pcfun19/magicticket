@@ -1,24 +1,28 @@
 @extends('layouts.app')
 @section('content')
 <div class="login-box">
-    <div class="login-logo">
-        <div class="login-logo">
-            <a href="{{ route('admin.home') }}">
-                {{ trans('panel.site_title') }}
-            </a>
-        </div>
-    </div>
+
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">
+            <div class="login-logo">
+                <div class="login-logo">
+                    <a href="{{ route('guest.home') }}">
+                        <img src="{{asset('logo.png')}}" width="100%">
+                    </a>
+                </div>
+            </div>
+            <!-- <p class="login-box-msg">
                 {{ trans('global.login') }}
-            </p>
+            </p> -->
 
             @if(session()->has('message'))
                 <p class="alert alert-info">
                     {{ session()->get('message') }}
                 </p>
             @endif
+
+            <p class="col-12  mb-3 p-0">By using this website you fully understand and accept our <a href="{{route('pages.static','terms')}}">Terms of Service.</a> </p>
+            <label class="bg-primary col-md-12 mb-3 control-label text-center">Login with Email</label>
 
             <form action="{{ route('login') }}" method="POST">
                 @csrf
@@ -53,7 +57,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                        <button class="confirm" type="submit" class="btn btn-primary btn-block btn-flat">
                             {{ trans('global.login') }}
                         </button>
                     </div>
@@ -69,13 +73,44 @@
                     </a>
                 </p>
             @endif
-            <p class="mb-1">
-                <a class="text-center" href="{{ route('register') }}">
-                    {{ trans('global.register') }}
-                </a>
-            </p>
+
+            <div class="form-group text-center mt-3">
+                <label for="name" class=" bg-danger col-md-12 control-label">Social Login/Register</label>
+                <div class="col-md-12">
+                    <a  href="{{ url('login/facebook') }}" class="confirm btn btn-social-icon btn-facebook"><i class="fab fa-facebook-square fa-3x"></i></a>
+                    <a  href="{{ url('login/google') }}" class="confirm btn btn-social-icon btn-google-plus"><i class="fab fa-google-plus-square fa-3x"></i></a>
+                    <a  href="{{ url('login/linkedin') }}" class="confirm btn btn-social-icon btn-linkedin"><i class="fab fa-linkedin fa-3x"></i></a>
+                    <a  href="{{ url('login/github') }}" class="confirm btn btn-social-icon btn-github"><i class="fab fa-github-square fa-3x"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group text-center">
+                <label for="name" class=" bg-light col-md-12 control-label">Register With Email</label>
+                <div class="col-md-12">
+                     <a  href="{{ route('register') }}"> {{ trans('global.register') }} </a>
+                </div>
+        </div>
+        
+        
         </div>
         <!-- /.login-card-body -->
+
+
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+@parent
+<!-- <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $('.confirm').on('click', function () {
+        var message = 'By using our platform you have read, understood and agree with our Terms of Service and all our Policies. Click OK to continue or cancel if you do not agree.';
+        action = confirm(message) ? true : event.preventDefault();
+    });
+</script> -->
 @endsection
