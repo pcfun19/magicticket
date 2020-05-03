@@ -33,15 +33,7 @@
                             <th>
                                 {{ trans('cruds.payment.fields.status') }}
                             </th>
-                            <th>
-                                {{ trans('cruds.payment.fields.method') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.savedCustomer.fields.slug') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.payment.fields.affiliate_user') }}
-                            </th>
+
                             <th>
                                 &nbsp;
                             </th>
@@ -64,15 +56,6 @@
                                 </td>
                                 <td>
                                     {{ App\Payment::STATUS_SELECT[$payment->status] ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->method->method_type ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->method->slug ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $payment->affiliate_user->business_name ?? '' }}
                                 </td>
                                 <td>
                                     @can('payment_show')

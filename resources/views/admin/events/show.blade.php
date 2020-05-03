@@ -9,29 +9,19 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.events.index') }}">
-                    {{ trans('global.back_to_list') }}
+                <a class="btn btn-primary" href="{{ route('admin.events.edit',$event->id) }}">
+                    {{ trans('global.edit') }}
                 </a>
             </div>
             <table class="table table-bordered table-striped">
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.event.fields.id') }}
-                        </th>
-                        <td>
-                            {{ $event->id }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.event.fields.cover') }}
                         </th>
                         <td>
                             @if($event->cover)
-                                <a href="{{ $event->cover->getUrl() }}" target="_blank">
-                                    <img src="{{ $event->cover->getUrl('thumb') }}" width="50px" height="50px">
-                                </a>
+                                    <img src="{{ $event->cover->thumbnail }}" width="150px" >
                             @endif
                         </td>
                     </tr>
@@ -41,6 +31,14 @@
                         </th>
                         <td>
                             {{ $event->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.event.fields.event_date') }}
+                        </th>
+                        <td>
+                            {{ $event->event_date }}
                         </td>
                     </tr>
                     <tr>
@@ -57,6 +55,14 @@
                         </th>
                         <td>
                             {{ $event->address }}
+
+                            @if ($event->latdec!='' && $event->londec!='')
+            
+                            <div class="mt-4 form-group embed-responsive embed-responsive-21by9">
+                            <iframe src = "https://maps.google.com/maps?q={{$event->latdec}},{{$event->londec}}&hl=es;z=14&amp;output=embed"></iframe>
+                            </div>
+
+                            @endif
                         </td>
                     </tr>
                     <tr>
@@ -69,20 +75,21 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.event.fields.scan_code') }}
-                        </th>
-                        <td>
-                            {{ $event->scan_code }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.event.fields.slug') }}
                         </th>
                         <td>
                             {{ $event->slug }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.event.fields.scan_code') }}
+                        </th>
+                        <td>
+                            {{ $event->scan_code }}
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
             <div class="form-group">

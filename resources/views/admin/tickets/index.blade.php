@@ -23,7 +23,7 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.ticket.fields.id') }}
+                            {{ trans('cruds.ticket.fields.created_at') }}
                         </th>
                         <th>
                             {{ trans('cruds.ticket.fields.event') }}
@@ -40,17 +40,9 @@
                         <th>
                             {{ trans('cruds.ticket.fields.currency') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.ticket.fields.includes') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.ticket.fields.instructions') }}
-                        </th>
+
                         <th>
                             {{ trans('cruds.ticket.fields.ticket_image') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.ticket.fields.event_date') }}
                         </th>
                         <th>
                             &nbsp;
@@ -64,7 +56,7 @@
 
                             </td>
                             <td>
-                                {{ $ticket->id ?? '' }}
+                                {{ substr($ticket->created_at,0,10) ?? '' }}
                             </td>
                             <td>
                                 {{ $ticket->event->name ?? '' }}
@@ -81,21 +73,11 @@
                             <td>
                                 {{ App\Ticket::CURRENCY_SELECT[$ticket->currency] ?? '' }}
                             </td>
-                            <td>
-                                {{ $ticket->includes ?? '' }}
-                            </td>
-                            <td>
-                                {{ $ticket->instructions ?? '' }}
-                            </td>
+
                             <td>
                                 @if($ticket->ticket_image)
-                                    <a href="{{ $ticket->ticket_image->getUrl() }}" target="_blank">
-                                        <img src="{{ $ticket->ticket_image->getUrl('thumb') }}" width="50px" height="50px">
-                                    </a>
+                                        <img src="{{ $ticket->ticket_image->thumbnail }}" width="50px" height="50px">
                                 @endif
-                            </td>
-                            <td>
-                                {{ $ticket->event_date ?? '' }}
                             </td>
                             <td>
                                 @can('ticket_show')

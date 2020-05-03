@@ -11,7 +11,7 @@ class AddRelationshipFieldsToPaymentsTable extends Migration
         Schema::table('payments', function (Blueprint $table) {
             $table->unsignedInteger('affiliate_user_id');
             $table->foreign('affiliate_user_id', 'affiliate_user_fk_1403606')->references('id')->on('users');
-            $table->unsignedInteger('created_by_id');
+            $table->unsignedInteger('created_by_id')->nullable();
             $table->foreign('created_by_id', 'created_by_fk_1403607')->references('id')->on('users');
             $table->unsignedInteger('ticket_id');
             $table->foreign('ticket_id', 'ticket_fk_1403878')->references('id')->on('tickets');

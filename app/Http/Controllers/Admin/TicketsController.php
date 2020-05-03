@@ -13,6 +13,9 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Intervention\Image\ImageManagerStatic as Image;
+use UUID;
+use QrCode;
 
 class TicketsController extends Controller
 {
@@ -38,6 +41,7 @@ class TicketsController extends Controller
 
     public function store(StoreTicketRequest $request)
     {
+        $uuid = UUID::generate()->string;
         $ticket = Ticket::create($request->all());
 
         if ($request->input('ticket_image', false)) {
@@ -48,7 +52,9 @@ class TicketsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $ticket->id]);
         }
 
-        return redirect()->route('admin.tickets.index');
+        $this->create_sample($ticket);
+
+        return redirect()->route('admin.tickets.show',$ticket->id)->withMessage('You should be able to see a sample ticket as the ones your clients will see. Ensure the text is correctly placed and visible or adjust.');
 
     }
 
@@ -75,9 +81,32 @@ class TicketsController extends Controller
         } elseif ($ticket->ticket_image) {
             $ticket->ticket_image->delete();
         }
+        
+        $this->create_sample($ticket);
 
-        return redirect()->route('admin.tickets.index');
+        return redirect()->route('admin.tickets.show',$ticket->id)->withMessage('You should be able to see a sample ticket as the ones your clients will see. Ensure the text is correctly placed and visible or adjust.');
 
+    }
+
+    public function create_sample ($ticket) {
+        
+        $uuid = $ticket->uuid;
+        // create Image from file
+        $img = Image::make($ticket->ticket_image->url)->resize(300, 400);
+
+        // write text at position
+        $img->text($uuid, $ticket->left_margin,  $ticket->top_margin, function($font) use ($ticket) {
+            
+            // $font->file(public_path('fonts/lato/Lato-Regular.ttf'));
+            $font->size($ticket->font_size);
+            $font->color('#000000');
+            $font->angle($ticket->font_angle);
+        });
+
+        
+        $img->insert(base64_encode(QrCode::format('png')->size(100)->errorCorrection('H')->generate($uuid)), 'bottom-right', 10, 10)->encode('data-url');
+
+        $ticket->addMediaFromBase64($img)->usingFileName($uuid.'.png')->toMediaCollection('ticket_sample');
     }
 
     public function show(Ticket $ticket)

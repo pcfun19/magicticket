@@ -22,6 +22,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "league/flysystem-aws-s3-v3": "^1.0",
+        "simplesoftwareio/simple-qrcode": "^2.0",
+        "spatie/geocoder": "^3.7",
         "spatie/laravel-medialibrary": "^7.19",
         "stripe/stripe-php": "^7.30",
         "webpatser/laravel-uuid": "^3.0",

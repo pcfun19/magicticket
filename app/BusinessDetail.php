@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Carbon;
 
 class BusinessDetail extends Model implements HasMedia
 {
@@ -53,7 +54,7 @@ class BusinessDetail extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')->width(50)->height(50);
+        $this->addMediaConversion('thumb')->width(150);
 
     }
 
@@ -61,8 +62,8 @@ class BusinessDetail extends Model implements HasMedia
     {
         $files = $this->getMedia('passport');
         $files->each(function ($item) {
-            $item->url       = $item->getUrl();
-            $item->thumbnail = $item->getUrl('thumb');
+            $item->url       = $item->getTemporaryUrl(Carbon::now()->addMinutes(30));
+            $item->thumbnail = $item->getTemporaryUrl(Carbon::now()->addMinutes(30),'thumb');
         });
 
         return $files;
@@ -71,7 +72,14 @@ class BusinessDetail extends Model implements HasMedia
 
     public function getDocumentsAttribute()
     {
-        return $this->getMedia('documents');
+        // return $this->getMedia('documents');
+        $files = $this->getMedia('documents');
+        $files->each(function ($item) {
+            $item->url       = $item->getTemporaryUrl(Carbon::now()->addMinutes(30));
+            $item->thumbnail = $item->getTemporaryUrl(Carbon::now()->addMinutes(30),'thumb');
+        });
+
+        return $files;
 
     }
 

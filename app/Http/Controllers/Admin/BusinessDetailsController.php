@@ -20,10 +20,16 @@ class BusinessDetailsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('business_detail_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
+        $business = BusinessDetail::where('created_by_id',request()->user()->id);
 
-        $businessDetails = BusinessDetail::all();
+        if($business->count()>0){
+            return redirect()->route('admin.business-details.show', [$business->first()->id]);
+        } else {
+            return redirect()->route('admin.business-details.create');
+        }
+        
 
-        return view('admin.businessDetails.index', compact('businessDetails'));
     }
 
     public function create()

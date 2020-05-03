@@ -10,14 +10,7 @@
         <form method="POST" action="{{ route("admin.tickets.update", [$ticket->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
-            <div class="form-group">
-                <label for="uuid">{{ trans('cruds.ticket.fields.uuid') }}</label>
-                <input class="form-control {{ $errors->has('uuid') ? 'is-invalid' : '' }}" type="text" name="uuid" id="uuid" value="{{ old('uuid', $ticket->uuid) }}">
-                @if($errors->has('uuid'))
-                    <span class="text-danger">{{ $errors->first('uuid') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.ticket.fields.uuid_helper') }}</span>
-            </div>
+
             <div class="form-group">
                 <label for="event_id">{{ trans('cruds.ticket.fields.event') }}</label>
                 <select class="form-control select2 {{ $errors->has('event') ? 'is-invalid' : '' }}" name="event_id" id="event_id">
@@ -92,14 +85,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.ticket.fields.ticket_image_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label class="required" for="event_date">{{ trans('cruds.ticket.fields.event_date') }}</label>
-                <input class="form-control datetime {{ $errors->has('event_date') ? 'is-invalid' : '' }}" type="text" name="event_date" id="event_date" value="{{ old('event_date', $ticket->event_date) }}" required>
-                @if($errors->has('event_date'))
-                    <span class="text-danger">{{ $errors->first('event_date') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.ticket.fields.event_date_helper') }}</span>
-            </div>
+
             <div class="form-group">
                 <label class="required" for="top_margin">{{ trans('cruds.ticket.fields.top_margin') }}</label>
                 <input class="form-control {{ $errors->has('top_margin') ? 'is-invalid' : '' }}" type="number" name="top_margin" id="top_margin" value="{{ old('top_margin', $ticket->top_margin) }}" step="1" required>
@@ -176,7 +162,7 @@
 @if(isset($ticket) && $ticket->ticket_image)
       var file = {!! json_encode($ticket->ticket_image) !!}
           this.options.addedfile.call(this, file)
-      this.options.thumbnail.call(this, file, '{{ $ticket->ticket_image->getUrl('thumb') }}')
+      this.options.thumbnail.call(this, file, file.thumbnail)
       file.previewElement.classList.add('dz-complete')
       $('form').append('<input type="hidden" name="ticket_image" value="' + file.file_name + '">')
       this.options.maxFiles = this.options.maxFiles - 1

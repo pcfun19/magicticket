@@ -2,15 +2,15 @@
     <!-- Brand Logo -->
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar bg-primary">
         <!-- Sidebar user (optional) -->
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
   
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("admin.home") }}">
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('/') || request()->is('admin') ? 'active' : '' }}" href="{{ route("admin.home") }}">
                         <i class="fas fa-fw fa-tachometer-alt nav-icon">
                         </i>
                         <p>
@@ -131,7 +131,7 @@
                 @endcan
                 @can('payment_access')
                     <li class="nav-item">
-                        <a href="{{ route("admin.payments.index") }}" class="nav-link {{ request()->is('admin/payments') || request()->is('admin/payments/*') ? 'active' : 'bg-primary' }}">
+                        <a href="{{ route("admin.payments.index") }}" class="nav-link {{ request()->is('admin/payments') || request()->is('admin/payments/*') ? 'active' : '' }}">
                             <i class="fa-fw nav-icon fas fa-money-bill-alt">
 
                             </i>

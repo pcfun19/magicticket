@@ -12,6 +12,8 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Carbon;
+use Geocoder;
 
 class EventsController extends Controller
 {
@@ -35,7 +37,17 @@ class EventsController extends Controller
 
     public function store(StoreEventRequest $request)
     {
-        $event = Event::create($request->all());
+        $geoAdd = [];
+        if ($request->input('is_online')==0){ $geo = Geocoder::getCoordinatesForAddress($request->input('address'));
+            $geoAdd = ['latdec'=>$geo['lat'],'longdec'=>$geo['lng']];
+        }
+        $isOnline = [];
+        if (!$request->input('is_online')){
+            $isOnline = ['is_online'=>0];
+        }
+
+
+        $event = Event::create($request->all()+['scan_code'=>$this->gen_rand()]+$geoAdd+$isOnline);
 
         if ($request->input('cover', false)) {
             $event->addMedia(storage_path('tmp/uploads/' . $request->input('cover')))->toMediaCollection('cover');
@@ -45,7 +57,7 @@ class EventsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $event->id]);
         }
 
-        return redirect()->route('admin.events.index');
+        return redirect()->route('admin.events.show',$event->id)->withMessage('Event created. If the address is physical, please check the map to confirm the address is shown properly or contact us.');
 
     }
 
@@ -60,7 +72,17 @@ class EventsController extends Controller
 
     public function update(UpdateEventRequest $request, Event $event)
     {
-        $event->update($request->all());
+        $geoAdd = [];
+        if ($request->input('is_online')==0){ $geo = Geocoder::getCoordinatesForAddress($request->input('address'));
+            $geoAdd = ['latdec'=>$geo['lat'],'londec'=>$geo['lng']];
+        }
+
+        $isOnline = [];
+        if (!$request->input('is_online')){
+            $isOnline = ['is_online'=>0];
+        }
+
+        $event->update($request->all()+$geoAdd+$isOnline);
 
         if ($request->input('cover', false)) {
             if (!$event->cover || $request->input('cover') !== $event->cover->file_name) {
@@ -71,7 +93,7 @@ class EventsController extends Controller
             $event->cover->delete();
         }
 
-        return redirect()->route('admin.events.index');
+        return redirect()->route('admin.events.show',$event->id)->withMessage('Event created. If the address is physical, please check the map to confirm the address is shown properly or contact us.');
 
     }
 

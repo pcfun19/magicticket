@@ -45,8 +45,8 @@
                         </th>
                         <td>
                             @foreach($businessDetail->passport as $key => $media)
-                                <a href="{{ $media->getUrl() }}" target="_blank">
-                                    <img src="{{ $media->getUrl('thumb') }}" width="50px" height="50px">
+                                <a href="{{ $media->thumbnail }}" target="_blank">
+                                    <img src="{{ $media->thumbnail }}" width="50px" height="50px">
                                 </a>
                             @endforeach
                         </td>
@@ -57,7 +57,7 @@
                         </th>
                         <td>
                             @foreach($businessDetail->documents as $key => $media)
-                                <a href="{{ $media->getUrl() }}" target="_blank">
+                                <a href="{{ $media->url}}" target="_blank">
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endforeach

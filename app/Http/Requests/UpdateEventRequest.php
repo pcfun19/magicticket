@@ -22,8 +22,7 @@ class UpdateEventRequest extends FormRequest
         return [
             'name'              => [
                 'required'],
-            'is_online'         => [
-                'required'],
+
             'address'           => [
                 'required'],
             'organiser_details' => [
@@ -31,6 +30,9 @@ class UpdateEventRequest extends FormRequest
             'slug'              => [
                 'required',
                 'unique:events,slug,' . request()->route('event')->id],
+            'event_date'      => [
+                'required',
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format')],
         ];
 
     }

@@ -10,4 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    function gen_rand($l=6){
+        return strtoupper(substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, $l));
+    }
 }

@@ -27,6 +27,15 @@
                 <span class="help-block">{{ trans('cruds.event.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="event_date">{{ trans('cruds.event.fields.event_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('event_date') ? 'is-invalid' : '' }}" type="text" name="event_date" id="event_date" value="{{ old('event_date') }}" required>
+                @if($errors->has('event_date'))
+                    <span class="text-danger">{{ $errors->first('event_date') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.event.fields.event_date_helper') }}</span>
+            </div>
+
+            <div class="form-group">
                 <div class="form-check {{ $errors->has('is_online') ? 'is-invalid' : '' }}">
                     <input class="form-check-input" type="checkbox" name="is_online" id="is_online" value="1" required {{ old('is_online', 0) == 1 ? 'checked' : '' }}>
                     <label class="required form-check-label" for="is_online">{{ trans('cruds.event.fields.is_online') }}</label>
@@ -104,7 +113,7 @@
 @if(isset($event) && $event->cover)
       var file = {!! json_encode($event->cover) !!}
           this.options.addedfile.call(this, file)
-      this.options.thumbnail.call(this, file, '{{ $event->cover->getUrl('thumb') }}')
+      this.options.thumbnail.call(this, file, file.thumbnail)
       file.previewElement.classList.add('dz-complete')
       $('form').append('<input type="hidden" name="cover" value="' + file.file_name + '">')
       this.options.maxFiles = this.options.maxFiles - 1

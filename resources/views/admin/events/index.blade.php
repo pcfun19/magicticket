@@ -22,23 +22,19 @@
                         <th width="10">
 
                         </th>
-                        <th>
-                            {{ trans('cruds.event.fields.id') }}
-                        </th>
+
                         <th>
                             {{ trans('cruds.event.fields.cover') }}
                         </th>
                         <th>
                             {{ trans('cruds.event.fields.name') }}
                         </th>
+
                         <th>
                             {{ trans('cruds.event.fields.is_online') }}
                         </th>
                         <th>
-                            {{ trans('cruds.event.fields.address') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.event.fields.organiser_details') }}
+                            {{ trans('cruds.event.fields.event_date') }}
                         </th>
                         <th>
                             {{ trans('cruds.event.fields.scan_code') }}
@@ -57,14 +53,10 @@
                             <td>
 
                             </td>
-                            <td>
-                                {{ $event->id ?? '' }}
-                            </td>
+
                             <td>
                                 @if($event->cover)
-                                    <a href="{{ $event->cover->getUrl() }}" target="_blank">
-                                        <img src="{{ $event->cover->getUrl('thumb') }}" width="50px" height="50px">
-                                    </a>
+                                    <img src="{{ $event->cover->thumbnail }}" width="50px" height="50px">
                                 @endif
                             </td>
                             <td>
@@ -74,12 +66,11 @@
                                 <span style="display:none">{{ $event->is_online ?? '' }}</span>
                                 <input type="checkbox" disabled="disabled" {{ $event->is_online ? 'checked' : '' }}>
                             </td>
+                            
                             <td>
-                                {{ $event->address ?? '' }}
-                            </td>
-                            <td>
-                                {{ $event->organiser_details ?? '' }}
-                            </td>
+                                {{ $event->event_date ?? '' }}
+                            </td>                            
+
                             <td>
                                 {{ $event->scan_code ?? '' }}
                             </td>

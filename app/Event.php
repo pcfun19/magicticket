@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Carbon;
 
 class Event extends Model implements HasMedia
 {
@@ -26,6 +27,7 @@ class Event extends Model implements HasMedia
     ];
 
     protected $dates = [
+        'event_date',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -39,6 +41,7 @@ class Event extends Model implements HasMedia
         'scan_code',
         'latdec',
         'londec',
+        'event_date',
         'created_at',
         'slug',
         'updated_at',
@@ -61,7 +64,7 @@ class Event extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')->width(50)->height(50);
+        $this->addMediaConversion('thumb')->width(150);
 
     }
 
@@ -76,8 +79,8 @@ class Event extends Model implements HasMedia
         $file = $this->getMedia('cover')->last();
 
         if ($file) {
-            $file->url       = $file->getUrl();
-            $file->thumbnail = $file->getUrl('thumb');
+            $file->url       = $file->getTemporaryUrl(Carbon::now()->addMinutes(30));
+            $file->thumbnail = $file->getTemporaryUrl(Carbon::now()->addMinutes(30),'thumb');
         }
 
         return $file;

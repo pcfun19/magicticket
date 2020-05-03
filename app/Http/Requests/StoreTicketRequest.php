@@ -29,16 +29,15 @@ class StoreTicketRequest extends FormRequest
                 'max:2147483647'],
             'price'           => [
                 'required',
-                'min:5'],
+                'integer',
+                'min:5',
+                'min:500'],
             'currency'        => [
                 'required'],
             'includes'        => [
                 'required'],
             'ticket_image'    => [
                 'required'],
-            'event_date'      => [
-                'required',
-                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format')],
             'top_margin'      => [
                 'required',
                 'integer',

@@ -9,20 +9,12 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tickets.index') }}">
-                    {{ trans('global.back_to_list') }}
+                <a class="btn btn-primary" href="{{ route('admin.tickets.edit',$ticket->id) }}">
+                    {{ trans('global.edit') }}
                 </a>
             </div>
             <table class="table table-bordered table-striped">
                 <tbody>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.id') }}
-                        </th>
-                        <td>
-                            {{ $ticket->id }}
-                        </td>
-                    </tr>
                     <tr>
                         <th>
                             {{ trans('cruds.ticket.fields.uuid') }}
@@ -92,21 +84,12 @@
                             {{ trans('cruds.ticket.fields.ticket_image') }}
                         </th>
                         <td>
-                            @if($ticket->ticket_image)
-                                <a href="{{ $ticket->ticket_image->getUrl() }}" target="_blank">
-                                    <img src="{{ $ticket->ticket_image->getUrl('thumb') }}" width="50px" height="50px">
-                                </a>
+                            @if($ticket->ticket_sample)
+                                    <img src="{{ $ticket->ticket_sample->url }}" class="responsive">
                             @endif
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.event_date') }}
-                        </th>
-                        <td>
-                            {{ $ticket->event_date }}
-                        </td>
-                    </tr>
+
                 </tbody>
             </table>
             <div class="form-group">

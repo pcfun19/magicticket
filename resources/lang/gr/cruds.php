@@ -171,7 +171,7 @@ return [
             'passport_helper'           => 'We will submit the passport on third party identification control provider to verify your identity',
             'documents'                 => 'Documents',
             'documents_helper'          => 'Submit company\'s registration certificate or other certificate that proves your ownership and registration',
-            'activities_details'        => 'Activities Details',
+            'activities_details'        => 'Activity Details',
             'activities_details_helper' => 'Describe your business. What you are selling and a few words about the people involved and the events.',
             'created_at'                => 'Created at',
             'created_at_helper'         => '',

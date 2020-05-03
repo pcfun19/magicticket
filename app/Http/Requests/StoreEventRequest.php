@@ -24,12 +24,14 @@ class StoreEventRequest extends FormRequest
                 'required'],
             'name'              => [
                 'required'],
-            'is_online'         => [
-                'required'],
+
             'address'           => [
                 'required'],
             'organiser_details' => [
                 'required'],
+            'event_date'      => [
+                'required',
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format')],
             'slug'              => [
                 'required',
                 'unique:events'],

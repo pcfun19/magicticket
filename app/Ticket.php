@@ -20,6 +20,7 @@ class Ticket extends Model implements HasMedia
 
     protected $appends = [
         'ticket_image',
+        'ticket_sample',
     ];
 
     public static $searchable = [
@@ -28,7 +29,6 @@ class Ticket extends Model implements HasMedia
     ];
 
     protected $dates = [
-        'event_date',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -49,7 +49,6 @@ class Ticket extends Model implements HasMedia
         'currency',
         'includes',
         'instructions',
-        'event_date',
         'created_at',
         'top_margin',
         'left_margin',
@@ -68,7 +67,7 @@ class Ticket extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')->width(50)->height(50);
+        $this->addMediaConversion('thumb')->width(150);
 
     }
 
@@ -86,11 +85,27 @@ class Ticket extends Model implements HasMedia
 
     public function getTicketImageAttribute()
     {
+
         $file = $this->getMedia('ticket_image')->last();
 
         if ($file) {
-            $file->url       = $file->getUrl();
-            $file->thumbnail = $file->getUrl('thumb');
+            $file->url       = $file->getTemporaryUrl(Carbon::now()->addMinutes(30));
+            $file->thumbnail = $file->getTemporaryUrl(Carbon::now()->addMinutes(30),'thumb');
+        }
+
+        return $file;
+
+    }
+
+
+    public function getTicketSampleAttribute()
+    {
+
+        $file = $this->getMedia('ticket_sample')->last();
+
+        if ($file) {
+            $file->url       = $file->getTemporaryUrl(Carbon::now()->addMinutes(30));
+            $file->thumbnail = $file->getTemporaryUrl(Carbon::now()->addMinutes(30),'thumb');
         }
 
         return $file;

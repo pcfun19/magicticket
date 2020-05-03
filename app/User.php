@@ -98,6 +98,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(User::class, 'affiliate_id', 'id');
 
+    }    
+    
+    public function business()
+    {
+        return $this->hasMany(User::class, 'created_by_id', 'id');
+
     }
 
     public function affiliateUserPayments()

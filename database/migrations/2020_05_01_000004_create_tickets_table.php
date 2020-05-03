@@ -20,6 +20,7 @@ class CreateTicketsTable extends Migration
             $table->integer('left_margin');
             $table->integer('font_size');
             $table->integer('font_angle');
+            $table->string('currency');
             $table->timestamps();
             $table->softDeletes();
         });

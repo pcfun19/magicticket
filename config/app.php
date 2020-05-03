@@ -176,6 +176,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
 
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+
+        Spatie\Geocoder\GeocoderServiceProvider::class
     ],
 
     /*
@@ -233,6 +236,9 @@ return [
         'UUID'     => Webpatser\Uuid\Uuid::class,
         
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'Geocoder' => Spatie\Geocoder\Facades\Geocoder::class,
+
 
     ],
 

@@ -18,6 +18,7 @@ class CreateEventsTable extends Migration
             $table->longText('organiser_details');
             $table->string('scan_code')->nullable();
             $table->string('slug')->unique();
+            $table->datetime('event_date');
             $table->timestamps();
             $table->softDeletes();
         });
