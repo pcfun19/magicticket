@@ -2,8 +2,8 @@
 
 return [
     'userManagement' => [
-        'title'          => 'Gestion des utilisateurs',
-        'title_singular' => 'Gestion des utilisateurs',
+        'title'          => 'User management',
+        'title_singular' => 'User management',
     ],
     'permission'     => [
         'title'          => 'Permissions',
@@ -22,8 +22,8 @@ return [
         ],
     ],
     'role'           => [
-        'title'          => 'Rôles',
-        'title_singular' => 'Rôle',
+        'title'          => 'Roles',
+        'title_singular' => 'Role',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => '',
@@ -40,8 +40,8 @@ return [
         ],
     ],
     'user'           => [
-        'title'          => 'Utilisateurs',
-        'title_singular' => 'Utilisateur',
+        'title'          => 'Users',
+        'title_singular' => 'User',
         'fields'         => [
             'id'                        => 'ID',
             'id_helper'                 => '',
@@ -165,7 +165,7 @@ return [
             'id_helper'                 => '',
             'name'                      => 'Name',
             'name_helper'               => '',
-            'taxid'                     => 'Taxid',
+            'taxid'                     => 'Tax ID',
             'taxid_helper'              => '',
             'passport'                  => 'Passport',
             'passport_helper'           => 'We will submit the passport on third party identification control provider to verify your identity',
@@ -207,6 +207,8 @@ return [
             'updated_at_helper'        => '',
             'deleted_at'               => 'Deleted at',
             'deleted_at_helper'        => '',
+            'event_date'                => 'Event Date',
+            'event_date_helper'         => '',
             'created_by'               => 'Created By',
             'created_by_helper'        => '',
             'organiser_details'        => 'Organiser Details',
@@ -257,8 +259,6 @@ return [
             'font_angle_helper'      => 'Angle of the code on the ticket',
             'currency'               => 'Currency',
             'currency_helper'        => '',
-            'event_date'             => 'Event Date',
-            'event_date_helper'      => '',
         ],
     ],
     'paymentMethod'  => [

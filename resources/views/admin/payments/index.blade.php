@@ -23,7 +23,7 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.id') }}
+                            {{ trans('cruds.payment.fields.created_at') }}
                         </th>
                         <th>
                             {{ trans('cruds.payment.fields.ticket') }}
@@ -37,9 +37,7 @@
                         <th>
                             {{ trans('cruds.payment.fields.method') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.savedCustomer.fields.slug') }}
-                        </th>
+
                         <th>
                             {{ trans('cruds.payment.fields.affiliate_user') }}
                         </th>
@@ -55,7 +53,7 @@
 
                             </td>
                             <td>
-                                {{ $payment->id ?? '' }}
+                                {{ substr($payment->created_at,0,10) ?? '' }}
                             </td>
                             <td>
                                 {{ $payment->ticket->name ?? '' }}
@@ -67,11 +65,9 @@
                                 {{ App\Payment::STATUS_SELECT[$payment->status] ?? '' }}
                             </td>
                             <td>
-                                {{ $payment->method->method_type ?? '' }}
+                                {{ $payment->method->method_type ?? '' }} {{ $payment->method->slug ?? '' }}
                             </td>
-                            <td>
-                                {{ $payment->method->slug ?? '' }}
-                            </td>
+
                             <td>
                                 {{ $payment->affiliate_user->business_name ?? '' }}
                             </td>

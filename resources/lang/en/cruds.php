@@ -165,7 +165,7 @@ return [
             'id_helper'                 => '',
             'name'                      => 'Name',
             'name_helper'               => '',
-            'taxid'                     => 'Taxid',
+            'taxid'                     => 'Tax ID',
             'taxid_helper'              => '',
             'passport'                  => 'Passport',
             'passport_helper'           => 'We will submit the passport on third party identification control provider to verify your identity',
