@@ -73,7 +73,7 @@ class EventsController extends Controller
     public function update(UpdateEventRequest $request, Event $event)
     {
         $geoAdd = [];
-        if ($request->input('is_online')==0){ $geo = Geocoder::getCoordinatesForAddress($request->input('address'));
+        if ($event->address!=$request->input('address') && $request->input('is_online')==0){ $geo = Geocoder::getCoordinatesForAddress($request->input('address'));
             $geoAdd = ['latdec'=>$geo['lat'],'londec'=>$geo['lng']];
         }
 

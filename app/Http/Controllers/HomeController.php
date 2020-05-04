@@ -117,33 +117,30 @@ class HomeController extends Controller
         $client_secret = '';
 
         $active_sub = false;
-        if (request()->user() && Subscription::Active()->count()>0) {$active_sub = true;}
+        if (request()->user() && SavedCustomer::all()>0) {$active_sub = true;}
 
         
         if(Gate::allows('non_paid_access')){
             
-            $subscription = Subscription::ActiveOrPending();
+            $subscription = SavedCustomer::all();
             if ($subscription->count()==1){
                 $subscription = $subscription->first();
                 $customer = $subscription->subscription; 
             } else {
                 $newCustomer = \Stripe\Customer::create();
                 $newSubscription = [
-                    'user_id'   => request()->user()->id,
-                    'provider'  => 'stripe',
-                    'subscription'  => $newCustomer->id,
-                    'status'    => 'pending',
-                    'type'      => 'subscription',
+                    'cteated_by_id'   => request()->user()->id,
+                    'provider'      => 'stripe',
+                    'code'          => $newCustomer->id,
+                    'method_type'   => 'card',
                 ];
-                Subscription::create($newSubscription);
+                SavedCustomer::create($newSubscription);
                 $customer = $newCustomer->id;
             }
 
-            $intent = \Stripe\PaymentIntent::create([
-            'amount'    => config('custom.6monthPriceCents'),
-            'currency'  => config('custom.currencyName'),
-            'setup_future_usage' => 'off_session',
-            'customer'  => $customer
+            $intent = \Stripe\SetupIntent::create([
+            'customer'     => $customer,
+            'usage'        => 'off_session'
             ]);    
             $client_secret = $intent->client_secret;
 
@@ -158,10 +155,10 @@ class HomeController extends Controller
         $msg = '';
 
         if (request()->input('type')=='intent'){
-            $pi = \Stripe\PaymentIntent::retrieve(request()->input('pi'));
+            $pi = \Stripe\SetupIntent::retrieve(request()->input('pi'));
 
             if ($pi->status=='succeeded' && $pi->customer){
-                $sub = Subscription::ActiveOrPending()->where('subscription',$pi->customer);
+                $sub = SavedCustomer::ActiveOrPending()->where('subscription',$pi->customer);
                 if ($sub->count()==1 && $sub->update(['status'=>'chargeable','ends_at'=>Carbon::now()->addMonths(6)])){
                     
                     $sub = $sub->first();
@@ -207,7 +204,7 @@ class HomeController extends Controller
                     'ends_at'       => Carbon::now()->addMonths(6)
                 ];
                 
-                if ($newSub = Subscription::create($newDBCharge)){
+                if ($newSub = SavedCustomer::create($newDBCharge)){
                     
                     $newDBPayment = [
                         'provider'          => 'stripe',
