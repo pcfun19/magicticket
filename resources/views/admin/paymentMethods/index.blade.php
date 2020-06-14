@@ -126,7 +126,7 @@ var stripe = Stripe('{{env('STRIPE_PUBLIC')}}');
         $('.processing-payment-loader').removeClass('hide');
         $('.payment-options').addClass('hide');
 
-        stripe.confirmCardPayment('{{ $client_secret ?? '' }}', {
+        stripe.confirmCardSetup('{{ $client_secret ?? '' }}', {
             payment_method: {
             card: card
             }
@@ -138,9 +138,9 @@ var stripe = Stripe('{{env('STRIPE_PUBLIC')}}');
                 $('.payment-options').removeClass('hide');
             } else {
             // The payment has been processed!
-            if (result.paymentIntent.status === 'succeeded') {
+            if (result.setupIntent.status === 'succeeded') {
                 // result.paymentIntent.status
-                window.location = '{{route('payment.method.save')}}?type=intent&pi='+result.paymentIntent.id;
+                window.location = '{{route('payment.method.save')}}?type=intent&pi='+result.setupIntent.id;
             }
             }
         });

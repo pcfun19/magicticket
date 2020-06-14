@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Subscription;
 use Config;
 use Carbon;
+use App\Ticket;
+use App\Event;
 
 class HomeController extends Controller
 {
@@ -43,62 +45,28 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function asset($code)
+
+    public function ticket($code)
     {   
 
-        $authorised = False; // by default noone is authorised to download
-
         Config::set('app.tenantOnly', False);
-        $file = File::where('code',$code)->where('user_id','>',0);
+        $ticket = Ticket::where('uuid',$code);
 
-        if ($file->count()==0){ abort(404); }
+        if ($ticket->count()==0){ abort(404); }
         
-        $file = $file->first();
-
-
-        /* FIRST MEGA CHECK - GROUP RESTRICTION */
-        /* FIRST MEGA CHECK - GROUP RESTRICTION */
-
-        // First we check if restriction applies for Group and Owner access only
-        $groups = DB::table('file_group')->where('file_id',$file->id)->pluck('group_id');
-
-        // if the file is restricted to specific groups then 
-        // the user MUST be logged in and in that case we check for grousp with the user
-        if ($groups->count()>0 && request()->user()) {
-
-            $userInAllowedGroup = DB::table('group_user')->where('user_id',request()->user()->id)->whereIn('group_id',$groups);
-            
-            // we authorise only if the user is in the groups allowed
-            if ($userInAllowedGroup->count()>0){ $authorised = True; }
-       
-        } else { $authorised = False; }
-
-
-        /* SECOND MEGA CHECK - PAID ASSET RESTRICTION */
-        /* SECOND MEGA CHECK - PAID ASSET RESTRICTION */
         
-        // We authorise always whatever its current type is (user may have changed it to private after people bought it) if it was previously Paid
-        if (request()->user()) {
-            $payments = DB::table('payments')->where('file_id',$file->id)->where('user_id',request()->user()->id);
-            if ($payments->count()>0){ $authorised = True; } elseif ($file->privacy=='paid') { $authorised = False; }
-        }
+        return view('ticket',['ticket'=>$ticket->first()]);
 
-        // Finally we always bypass everything and allow access to the OWNER of the file
-        // Public and Shared assets are NOT restricted to Group members only so anyone can access
-        // ONLY Private assets are restricted
-        if (request()->user() && (request()->user()->id==$file->user_id || $file->privacy=='public' || $file->privacy=='shared')) {$authorised = True;}
+    }    
 
-        /* SECOND MEGA CHECK - PAID ASSET RESTRICTION */
-        /* SECOND MEGA CHECK - PAID ASSET RESTRICTION */
-       
-        // Throw not authorise if is private, Never paid before and Use is not in a valid access Group
-        if ($file->privacy=='private' && !$authorised) {
-            abort(403); 
-        }
+    public function event($code)
+    {   
+        Config::set('app.tenantOnly', False);
+        $event = Event::where('slug',$code);
 
-        $response = new \Illuminate\Http\Response(view('asset', ['file'=>$file, 'authorised'=>$authorised]));
-        $response->withCookie(cookie()->forever('affiliate_id',$file->user_id));
-        return $response;
+        if ($event->count()==0){ abort(404); }
+        
+        return view('event',['event'=>$event->first()]);
     }    
 
     public function home()
@@ -119,7 +87,6 @@ class HomeController extends Controller
         $active_sub = false;
         if (request()->user() && SavedCustomer::all()>0) {$active_sub = true;}
 
-        
         if(Gate::allows('non_paid_access')){
             
             $subscription = SavedCustomer::all();

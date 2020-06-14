@@ -6,7 +6,8 @@ Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallba
 
 Route::get('/', 'HomeController@home')->name('guest.home');
 Route::get('static/{id}', 'HomeController@static')->name('pages.static');
-Route::get('ticket/{code}', 'HomeController@asset')->name('ticket.get');
+Route::post('ticket/{code}', 'HomeController@ticketBuy')->name('ticket.buy');
+Route::get('ticket/{code}', 'HomeController@ticket')->name('ticket.get');
 Route::get('event/{code}', 'HomeController@event')->name('event.get');
 
 // Payment execution or cancellation
